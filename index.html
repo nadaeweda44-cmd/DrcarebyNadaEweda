@@ -53,6 +53,8 @@
         [dir="ltr"] .cart-sidebar.open { right: 0; }
 
         .img-container { height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: white; }
+        .img-container img { width: 100%; height: 100%; object-fit: contain; }
+
         .dark-mode #navbar img { filter: brightness(0) invert(1); }
         .float-whatsapp { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
         
@@ -109,7 +111,7 @@
             <div class="relative hidden md:block">
                 <img src="https://images.unsplash.com/photo-1598440494882-d9512c8fee33?auto=format&fit=crop&q=80" class="rounded-[3rem] shadow-2xl w-full h-[450px] object-cover border-[15px] border-white dark:border-[#333]">
             </div>
-            <div class="text-right">
+            <div class="text-right" id="hero-content">
                 <span class="text-sm font-bold opacity-70 mb-4 block" data-ar="عناية طبية تجميلية خبيرة" data-en="Expert Skincare">عناية طبية تجميلية خبيرة</span>
                 <h1 class="text-5xl md:text-7xl mb-8 font-bold leading-tight" data-ar="بشرة صحية. شعر جذاب." data-en="Healthy Skin. Beautiful Hair.">بشرة صحية. شعر جذاب.</h1>
                 <p class="text-lg opacity-70 mb-10 leading-relaxed italic text-right" data-ar="بإشراف د. ندى عويضة. نختار لكِ أفضل التركيبات الطبية لضمان نتائج حقيقية وآمنة لبشرتك وشعرك." data-en="Selected medical formulas by Dr. Nada Eweda for safe and real results.">بإشراف د. ندى عويضة. نختار لكِ أفضل التركيبات الطبية لضمان نتائج حقيقية وآمنة لبشرتك وشعرك.</p>
@@ -146,30 +148,29 @@
     </div>
 
     <script>
-        // FIXED DIRECT LINKS (MANDATORY FOR IMGBB TO SHOW ON WEBSITE)
         const products = [
             { id: 1, nameAr: "مرطب شفاه لانيج كوري", nameEn: "Laneige Korean Lip Balm", price: 150, tagAr: "كوري", tagEn: "K-BEAUTY", img: "https://i.ibb.co/60fZMmqr/Whats-App-Image-2026-06-22-at-10-48-12-PM.jpg" },
             { id: 2, nameAr: "عرض مزيل عرق ستارفيل 1+1", nameEn: "Starville Deodorant 1+1", price: 220, tagAr: "عرض", tagEn: "OFFER", img: "https://i.ibb.co/SwJjgSHW/Whats-App-Image-2026-06-22-at-10-47-00-PM.jpg" },
             { id: 3, nameAr: "مرطب الشفاه شان بالم", nameEn: "SHAAN Lip Balm", price: 100, tagAr: "شفايف", tagEn: "LIPS", img: "https://i.ibb.co/LdGfQByK/Whats-App-Image-2026-06-22-at-10-47-50-PM.jpg" },
-            { id: 4, nameAr: "غسول ستارفيل للبشرة الدهنية", nameEn: "Starville Wash Offer", price: 230, tagAr: "توفير", tagEn: "SALE", img: "https://i.ibb.co/9RbQkWs/Whats-App-Image-2026-06-22-at-12-25-45-AM.jpg" },
-            { id: 5, nameAr: "فازلين ليب ثيرابي صفيح", nameEn: "Vaseline Lip Therapy", price: 250, tagAr: "شفايف", tagEn: "LIPS", img: "https://i.ibb.co/mp6yLC6/Whats-App-Image-2026-06-22-at-12-27-10-AM.jpg" },
-            { id: 6, nameAr: "مرطب مويست وان", nameEn: "Moist-1 Cream", price: 180, tagAr: "طبي", tagEn: "MEDICAL", img: "https://i.ibb.co/vCDgnKLR/Whats-App-Image-2026-06-22-at-12-17-47-AM.jpg" },
-            { id: 7, nameAr: "غسول مويست وان جاف", nameEn: "Moist-1 Cleanser", price: 250, tagAr: "كريمي", tagEn: "CREAMY", img: "https://i.ibb.co/Pv45WKRj/Whats-App-Image-2026-06-22-at-12-21-52-AM.jpg" },
-            { id: 8, nameAr: "هير ميست هير ديلي", nameEn: "Hair Daily Mist", price: 350, tagAr: "شعر", tagEn: "MIST", img: "https://i.ibb.co/rKh4smpR/Whats-App-Image-2026-06-22-at-12-19-28-AM.jpg" },
-            { id: 9, nameAr: "تترا جلو كريم تفتيح", nameEn: "Tetra Glow Brightening", price: 350, tagAr: "تفتيح", tagEn: "GLOW", img: "https://i.ibb.co/Kx4VZWVW/Whats-App-Image-2026-06-22-at-12-02-17-AM.jpg" },
-            { id: 10, nameAr: "سيروم فلوريش", nameEn: "Florysh Salicylic", price: 350, tagAr: "حب الشباب", tagEn: "ACNE", img: "https://i.ibb.co/h1HH9dCC/Whats-App-Image-2026-06-21-at-8-08-22-PM.jpg" },
-            { id: 11, nameAr: "زيت كابكسي إليكسير", nameEn: "Capixy Hair Elixir", price: 650, tagAr: "إليكسير", tagEn: "ELIXIR", img: "https://i.ibb.co/NdZPtb5M/Whats-App-Image-2026-06-21-at-8-07-41-PM.jpg" },
-            { id: 12, nameAr: "غسول ديرماكتيف", nameEn: "Dermactive Foam", price: 220, tagAr: "غسول", tagEn: "WASH", img: "https://i.ibb.co/s9RGpGzH/Whats-App-Image-2026-06-21-at-7-59-18-PM.jpg" },
-            { id: 13, nameAr: "ديرماكتيف فلويد 1+1", nameEn: "Dermactive 1+1 Offer", price: 300, tagAr: "1+1 عرض", tagEn: "1+1", img: "https://i.ibb.co/KTBkrTC/Whats-App-Image-2026-06-21-at-8-00-39-PM.jpg" },
-            { id: 14, nameAr: "مرطب كيارا", nameEn: "Kiara Gel", price: 250, tagAr: "جيل", tagEn: "GEL", img: "https://i.ibb.co/JWZKgt50/Whats-App-Image-2026-06-21-at-7-56-14-PM.jpg" },
-            { id: 15, nameAr: "لوريال برودجي", nameEn: "L'Oreal Prodigy", price: 450, tagAr: "صبغة", tagEn: "COLOR", img: "https://i.ibb.co/WR4B1T8/Whats-App-Image-2026-06-21-at-7-55-17-PM.jpg" },
-            { id: 16, nameAr: "لوشن شان فانيليا", nameEn: "Shaan Vanilla", price: 220, tagAr: "بادي ميلك", tagEn: "BODY", img: "https://i.ibb.co/8nBg8jg1/Whats-App-Image-2026-06-21-at-7-54-55-PM-1.jpg" },
-            { id: 17, nameAr: "لوشن شان ورد", nameEn: "Shaan Rose", price: 220, tagAr: "بادي ميلك", tagEn: "BODY", img: "https://i.ibb.co/rKt2yZ2D/Whats-App-Image-2026-06-21-at-7-54-55-PM-1.jpg" },
-            { id: 18, nameAr: "ميلاتايم جل", nameEn: "Melatime Gel", price: 350, tagAr: "إسباني", tagEn: "SPANISH", img: "https://i.ibb.co/xSFmvk8k/Whats-App-Image-2026-06-21-at-7-54-30-PM.jpg" },
-            { id: 19, nameAr: "مجموعة ڤيرا", nameEn: "Vera Set", price: 450, tagAr: "مجموعة", tagEn: "SET", img: "https://i.ibb.co/LDSw6JjH/Whats-App-Image-2026-06-21-at-7-54-02-PM.jpg" },
-            { id: 20, nameAr: "ايفا أرجواني", nameEn: "Eva Purple", price: 75, oldPrice: 100, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/0pjCpBs1/Whats-App-Image-2026-06-21-at-6-28-55-PM.jpg" },
-            { id: 21, nameAr: "ايفا أزرق", nameEn: "Eva Blue", price: 75, oldPrice: 100, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/gbsk41g2/Whats-App-Image-2026-06-21-at-6-16-46-PM.jpg" },
-            { id: 22, nameAr: "ايفا وردي", nameEn: "Eva Pink", price: 75, oldPrice: 100, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/BKsQRX5G/Whats-App-Image-2026-06-21-at-5-28-26-PM.jpg" },
+            { id: 4, nameAr: "ايفا أزرق", nameEn: "Eva Blue Splash", price: 75, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/NgwcThYv/image.jpg" },
+            { id: 5, nameAr: "ايفا وردي", nameEn: "Eva Pink Splash", price: 75, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/DgKvnxHY/image.jpg" },
+            { id: 6, nameAr: "غسول ستارفيل للبشرة الدهنية", nameEn: "Starville Wash Offer", price: 230, tagAr: "توفير", tagEn: "SALE", img: "https://i.ibb.co/9RbQkWs/Whats-App-Image-2026-06-22-at-12-25-45-AM.jpg" },
+            { id: 7, nameAr: "فازلين ليب ثيرابي صفيح", nameEn: "Vaseline Lip Therapy", price: 250, tagAr: "شفايف", tagEn: "LIPS", img: "https://i.ibb.co/mp6yLC6/Whats-App-Image-2026-06-22-at-12-27-10-AM.jpg" },
+            { id: 8, nameAr: "مرطب مويست وان", nameEn: "Moist-1 Cream", price: 180, tagAr: "طبي", tagEn: "MEDICAL", img: "https://i.ibb.co/vCDgnKLR/Whats-App-Image-2026-06-22-at-12-17-47-AM.jpg" },
+            { id: 9, nameAr: "غسول مويست وان جاف", nameEn: "Moist-1 Cleanser", price: 250, tagAr: "كريمي", tagEn: "CREAMY", img: "https://i.ibb.co/Pv45WKRj/Whats-App-Image-2026-06-22-at-12-21-52-AM.jpg" },
+            { id: 10, nameAr: "هير ميست هير ديلي", nameEn: "Hair Daily Mist", price: 350, tagAr: "شعر", tagEn: "MIST", img: "https://i.ibb.co/rKh4smpR/Whats-App-Image-2026-06-22-at-12-19-28-AM.jpg" },
+            { id: 11, nameAr: "تترا جلو كريم تفتيح", nameEn: "Tetra Glow Brightening", price: 350, tagAr: "تفتيح", tagEn: "GLOW", img: "https://i.ibb.co/Kx4VZWVW/Whats-App-Image-2026-06-22-at-12-02-17-AM.jpg" },
+            { id: 12, nameAr: "سيروم فلوريش", nameEn: "Florysh Salicylic", price: 350, tagAr: "ACNE", tagEn: "ACNE", img: "https://i.ibb.co/h1HH9dCC/Whats-App-Image-2026-06-21-at-8-08-22-PM.jpg" },
+            { id: 13, nameAr: "زيت كابكسي إليكسير", nameEn: "Capixy Elixir", price: 650, tagAr: "إليكسير", tagEn: "ELIXIR", img: "https://i.ibb.co/NdZPtb5M/Whats-App-Image-2026-06-21-at-8-07-41-PM.jpg" },
+            { id: 14, nameAr: "غسول ديرماكتيف فوم", nameEn: "Dermactive Foam", price: 220, tagAr: "غسول", tagEn: "WASH", img: "https://i.ibb.co/s9RGpGzH/Whats-App-Image-2026-06-21-at-7-59-18-PM.jpg" },
+            { id: 15, nameAr: "ديرماكتيف فلويد 1+1", nameEn: "Dermactive 1+1 Offer", price: 300, tagAr: "عرض", tagEn: "1+1", img: "https://i.ibb.co/KTBkrTC/Whats-App-Image-2026-06-21-at-8-00-39-PM.jpg" },
+            { id: 16, nameAr: "مرطب كيارا جيل", nameEn: "Kiara Gel", price: 250, tagAr: "جيل", tagEn: "GEL", img: "https://i.ibb.co/JWZKgt50/Whats-App-Image-2026-06-21-at-7-56-14-PM.jpg" },
+            { id: 17, nameAr: "لوريال برودجي", nameEn: "L'Oreal Prodigy", price: 450, tagAr: "صبغة", tagEn: "COLOR", img: "https://i.ibb.co/WR4B1T8/Whats-App-Image-2026-06-21-at-7-55-17-PM.jpg" },
+            { id: 18, nameAr: "شان فانيليا", nameEn: "Shaan Vanilla", price: 220, tagAr: "بادي ميلك", tagEn: "BODY", img: "https://i.ibb.co/8nBg8jg1/Whats-App-Image-2026-06-21-at-7-54-55-PM-1.jpg" },
+            { id: 19, nameAr: "شان ورد", nameEn: "Shaan Rose", price: 220, tagAr: "بادي ميلك", tagEn: "BODY", img: "https://i.ibb.co/rKt2yZ2D/Whats-App-Image-2026-06-21-at-7-54-55-PM.jpg" },
+            { id: 20, nameAr: "ميلاتايم جل", nameEn: "Melatime Gel", price: 350, tagAr: "إسباني", tagEn: "SPF 50+", img: "https://i.ibb.co/xSFmvk8k/Whats-App-Image-2026-06-21-at-7-54-30-PM.jpg" },
+            { id: 21, nameAr: "مجموعة ڤيرا للشعر", nameEn: "Vera Set", price: 450, tagAr: "مجموعة", tagEn: "SET", img: "https://i.ibb.co/LDSw6JjH/Whats-App-Image-2026-06-21-at-7-54-02-PM.jpg" },
+            { id: 22, nameAr: "ايفا أرجواني", nameEn: "Eva Purple", price: 75, tagAr: "ترافيل", tagEn: "TRAVEL", img: "https://i.ibb.co/1YfrYszB/image.jpg" },
             { id: 23, nameAr: "دراكون جيل 1+1", nameEn: "Drakon Gel 1+1", price: 250, tagAr: "1+1", tagEn: "1+1", img: "https://i.ibb.co/6Jc1hmL2/Whats-App-Image-2026-06-21-at-5-21-23-PM.jpg" },
             { id: 24, nameAr: "دراكون كريم 1+1", nameEn: "Drakon Cream 1+1", price: 300, tagAr: "1+1", tagEn: "1+1", img: "https://i.ibb.co/6c80gPhm/Whats-App-Image-2026-06-21-at-5-19-10-PM.jpg" },
             { id: 25, nameAr: "كليرسال المطور", nameEn: "Clearsal pH", price: 200, tagAr: "طبي", tagEn: "MEDICAL", img: "https://i.ibb.co/Kp00Vghf/Whats-App-Image-2026-06-22-at-12-16-30-AM.jpg" },
@@ -200,12 +201,17 @@
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('open'); }
         function addToCart(id) { const p = products.find(prod => prod.id === id); cart.push(p); updateCartUI(); if(!document.body.querySelector('.cart-sidebar').classList.contains('open')) toggleCart(); }
         function removeFromCart(idx) { cart.splice(idx, 1); updateCartUI(); }
+        
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const items = document.getElementById('cart-items'); items.innerHTML = ''; let total = 0;
-            cart.forEach((it, idx) => { total += it.price; items.innerHTML += `<div class="flex items-center gap-4 bg-gray-50 dark:bg-black/20 p-4 rounded-2xl"><img src="${it.img}" class="w-10 h-10 rounded-lg object-cover"><div class="flex-1 text-right"><h4 class="text-[10px] font-bold">${lang === 'ar' ? it.nameAr : it.nameEn}</h4><p class="text-xs text-emerald-600 font-bold">${it.price} EGP</p></div><button onclick="removeFromCart(${idx})"><i data-lucide="trash-2" class="w-4 h-4 text-gray-400"></i></button></div>`; });
+            cart.forEach((it, idx) => { 
+                total += it.price; 
+                items.innerHTML += `<div class="flex items-center gap-4 bg-gray-50 dark:bg-black/20 p-4 rounded-2xl"><img src="${it.img}" class="w-10 h-10 rounded-lg object-cover"><div class="flex-1 text-right"><h4 class="text-[10px] font-bold">${lang === 'ar' ? it.nameAr : it.nameEn}</h4><p class="text-xs text-emerald-600 font-bold">${it.price} EGP</p></div><button onclick="removeFromCart(${idx})"><i data-lucide="trash-2" class="w-4 h-4 text-gray-400"></i></button></div>`; 
+            });
             document.getElementById('cart-total').innerText = total + " EGP"; lucide.createIcons();
         }
+
         function toggleLang() {
             lang = lang === 'ar' ? 'en' : 'ar';
             const html = document.getElementById('main-html'); html.dir = lang === 'ar' ? 'rtl' : 'ltr'; html.lang = lang;
@@ -216,8 +222,43 @@
             document.querySelectorAll('[data-ar]').forEach(el => el.innerText = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en'));
             renderProducts(); updateCartUI(); lucide.createIcons();
         }
-        function openCheckout() { if(cart.length === 0) return alert(lang === 'ar' ? "الحقيبة فارغة!" : "Bag is empty!"); document.getElementById('checkoutModal').classList.remove('hidden'); }
+
+        function openCheckout() { 
+            if(cart.length === 0) return alert(lang === 'ar' ? "الحقيبة فارغة!" : "Bag is empty!"); 
+            document.getElementById('checkoutModal').classList.remove('hidden'); 
+        }
         function closeCheckout() { document.getElementById('checkoutModal').classList.add('hidden'); }
+
+        // --- THE FIXED WHATSAPP LOGIC ---
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const total = document.getElementById('cart-total').innerText;
+            const items = cart.map(i => lang === 'ar' ? i.nameAr : i.nameEn).join(', ');
+
+            const msgAr = `*طلب جديد دكتور كير*%0A*المنتجات:* ${items}%0A*الإجمالي:* ${total}%0A---%0A*الاسم:* ${name}%0A*الموبايل:* ${phone}%0A*العنوان:* ${address}`;
+            const msgEn = `*DR. CARE NEW ORDER*%0A*Items:* ${items}%0A*Total:* ${total}%0A---%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Address:* ${address}`;
+            
+            const finalMsg = lang === 'ar' ? msgAr : msgEn;
+
+            // Open WhatsApp immediately
+            window.open(`https://wa.me/201091560043?text=${finalMsg}`, '_blank');
+
+            // Send to Formspree in background
+            fetch('https://formspree.io/f/xvzjpvpw', {
+                method: 'POST',
+                body: JSON.stringify({ name, phone, address, items, total }),
+                headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+            });
+
+            // Cleanup
+            cart = [];
+            updateCartUI();
+            closeCheckout();
+        });
+
         lucide.createIcons(); renderProducts();
     </script>
 </body>
