@@ -331,10 +331,14 @@
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nm = document.getElementById('custName').value, ph = document.getElementById('custPhone').value, ad = document.getElementById('custAddress').value;
-            const its = cart.map(i => lang === 'ar' ? i.nameAr : i.nameEn).join(', ');
+            const its = cart.map(i => lang === 'ar' ? i.nameAr : i.nameEn).join('\n - ');
             const total = document.getElementById('cart-total').innerText;
-            const msg = `*DR CARE ORDER*%0A*Items:* ${its}%0A*Total:* ${total}%0A---%0A*Name:* ${nm}%0A*Phone:* ${ph}%0A*Address:* ${ad}`;
-            window.open(`https://wa.me/201091560043?text=${msg}`, '_blank');
+            
+            const rawMsg = `*DR CARE ORDER*\n*Items:*\n - ${its}\n*Total:* ${total}\n---\n*Name:* ${nm}\n*Phone:* ${ph}\n*Address:* ${ad}`;
+            
+            // Fixed line: using encodeURIComponent to prevent "&" from cutting off the text
+            window.open(`https://wa.me/201091560043?text=${encodeURIComponent(rawMsg)}`, '_blank');
+            
             cart = []; updateCartUI(); closeCheckout();
         });
 
