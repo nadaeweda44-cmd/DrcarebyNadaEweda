@@ -6,6 +6,11 @@
     <title>Dr. Care | Dr. Nada Eweda</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -14,13 +19,10 @@
             --primary: #6FAF8F; --gold: #C8A96A; --dark: #000000; 
             --bg: #FDFCFB; --text: #1A2E24; --card: #ffffff; --border: rgba(0,0,0,0.05);
         }
-        .dark-mode { --bg: #121212; --text: #f1f1f1; --card: #1e1e1e; --border: #333333; --dark: #000000; }
+        .dark { --bg: #121212; --text: #f1f1f1; --card: #1e1e1e; --border: #333333; --dark: #000000; }
         
-        /* منع اهتزاز الصفحة عند ظهور السكرول بار */
-        html { overflow-y: scroll; }
-        body { font-family: 'Montserrat', 'Cairo', sans-serif; background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
+        body { font-family: 'Montserrat', 'Cairo', sans-serif; background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* القائمة العلوية ثابتة تماماً */
         .nav-glass { 
             background: rgba(255, 255, 255, 0.95); 
             backdrop-filter: blur(10px); 
@@ -29,7 +31,7 @@
             position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
             display: flex; align-items: center; justify-content: space-between;
         }
-        .dark-mode .nav-glass { background: rgba(18, 18, 18, 0.9); }
+        .dark .nav-glass { background: rgba(18, 18, 18, 0.9); }
 
         .btn-lang-toggle {
             background-color: #000000; color: white;
@@ -49,7 +51,6 @@
         .product-card { transition: 0.4s ease; border: 1px solid var(--border); background: var(--card); border-radius: 2rem; overflow: hidden; position: relative; display: flex; flex-direction: column; }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-        /* الأزرار سوداء بالكامل تتحول للأخضر */
         .btn-order-master { 
             background-color: #000000 !important; color: #ffffff !important; 
             width: 100%; padding: 14px; border-radius: 12px; 
@@ -58,34 +59,52 @@
         }
         .btn-order-master:hover { background-color: #6FAF8F !important; }
 
-        .cart-sidebar { position: fixed; left: -100%; top: 0; width: 350px; height: 100%; background: var(--card); z-index: 2000; transition: 0.5s; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
-        [dir="ltr"] .cart-sidebar { left: auto; right: -100%; }
-        .cart-sidebar.open { left: 0; }
-        [dir="ltr"].cart-sidebar.open { right: 0; }
+        .cart-sidebar { position: fixed; right: -100%; top: 0; width: 350px; height: 100%; background: var(--card); z-index: 2000; transition: 0.5s; box-shadow: -10px 0 30px rgba(0,0,0,0.2); }
+        [dir="rtl"] .cart-sidebar { right: auto; left: -100%; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
+        .cart-sidebar.open { right: 0; }
+        [dir="rtl"] .cart-sidebar.open { left: 0; }
+
+        .filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid var(--border); font-size: 12px; font-weight: 700; transition: 0.3s; color: var(--text); }
+        .filter-btn.active { background: #000; color: #fff; border-color: #000; }
+        .dark .filter-btn.active { background: var(--primary); border-color: var(--primary); color: #000; }
 
         .img-container { height: 260px; display: flex; align-items: center; justify-content: center; padding: 20px; background: white; }
         .img-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .dark-mode #navbar img { filter: brightness(0) invert(1); }
+        .dark #navbar img { filter: brightness(0) invert(1); }
         .float-whatsapp { position: fixed; bottom: 30px; right: 30px; z-index: 1500; }
+        
+        section { background-color: var(--bg); }
     </style>
 </head>
 <body class="lang-en">
 
     <!-- CART SIDEBAR -->
     <div id="cart-sidebar" class="cart-sidebar p-8 flex flex-col">
-        <div class="flex justify-between items-center mb-8 border-b pb-4"><h2 class="text-xl font-bold" data-ar="حقيبة التسوق" data-en="Shopping Bag">Shopping Bag</h2><button onclick="toggleCart()"><i data-lucide="x"></i></button></div>
-        <div id="cart-items" class="flex-1 overflow-y-auto space-y-6 text-right font-bold"></div>
-        <div class="border-t pt-6 text-right"><div class="flex justify-between mb-6 font-bold text-xl"><span data-ar="الإجمالي" data-en="Total">Total</span><span id="cart-total">0 EGP</span></div><button onclick="openCheckout()" class="btn-order-master uppercase" data-ar="إتمام الطلب" data-en="Checkout Now">Checkout Now</button></div>
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+            <h2 class="text-xl font-bold" data-ar="حقيبة التسوق" data-en="Shopping Bag">Shopping Bag</h2>
+            <button onclick="toggleCart()"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto space-y-6 font-bold"></div>
+        <div class="border-t pt-6">
+            <div class="flex justify-between mb-6 font-bold text-xl">
+                <span data-ar="الإجمالي" data-en="Total">Total</span>
+                <span id="cart-total">0 EGP</span>
+            </div>
+            <button onclick="openCheckout()" class="btn-order-master uppercase" data-ar="إتمام الطلب" data-en="Checkout Now">Checkout Now</button>
+        </div>
     </div>
 
     <!-- NAVBAR -->
     <nav id="navbar" class="nav-glass px-6">
-        <div class="flex items-center space-x-reverse space-x-4">
+        <div class="flex items-center space-x-4 rtl:space-x-reverse">
             <button onclick="toggleLang()" class="btn-lang-toggle" id="lang-btn">AR</button>
-            <button onclick="toggleTheme()" class="p-2 hover:text-[#6FAF8F] transition"><i data-lucide="moon" id="theme-icon"></i></button>
-            <div class="relative cursor-pointer group" onclick="toggleCart()"><i data-lucide="shopping-basket"></i><span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">0</span></div>
+            <button onclick="toggleTheme()" class="p-2 hover:text-[#6FAF8F] transition text-current"><i data-lucide="moon" id="theme-icon"></i></button>
+            <div class="relative cursor-pointer group" onclick="toggleCart()">
+                <i data-lucide="shopping-basket"></i>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-gold text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold">0</span>
+            </div>
         </div>
-        <ul class="hidden md:flex space-x-10 font-bold text-sm">
+        <ul class="hidden md:flex space-x-10 rtl:space-x-reverse font-bold text-sm">
             <li><a href="#home" data-ar="الرئيسية" data-en="Home">Home</a></li>
             <li><a href="#shop" data-ar="العروض" data-en="Offers">Offers</a></li>
             <li><a href="https://chat.whatsapp.com/DZbMA5aDKGLHhWbzyblXfz" target="_blank" data-ar="مجتمعنا" data-en="Community">Community</a></li>
@@ -94,134 +113,219 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <section id="home" class="min-h-screen flex items-center pt-24 px-6 overflow-hidden bg-white">
+    <section id="home" class="min-h-screen flex items-center pt-24 px-6 overflow-hidden">
         <div class="container mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div class="relative hidden md:block">
                 <img class="hero-img rounded-[3rem] shadow-2xl w-full h-[450px] object-cover border-[15px] border-white dark:border-[#333]">
             </div>
-            <div id="hero-content">
+            <div id="hero-content" class="rtl:text-right">
                 <span class="text-sm font-bold opacity-70 mb-4 block underline decoration-gold" data-ar="عناية طبية تجميلية خبيرة" data-en="Expert Skincare">Expert Skincare</span>
                 <h1 class="text-5xl md:text-7xl mb-8 font-bold leading-tight" data-ar="بشرة صحية. شعر جذاب." data-en="Healthy Skin. Beautiful Hair.">Healthy Skin. Beautiful Hair.</h1>
-                <p class="text-lg opacity-70 mb-10 leading-relaxed italic" data-ar="بإشراف د. ندى عويضة. نختار لكِ أفضل التركيبات الطبية لضمان نتائج حقيقية وآمنة." data-en="Under Dr. Nada's supervision, we provide high-end clinical formulas for real results.">Under Dr. Nada's supervision, we provide high-end clinical formulas for real results.</p>
-                <a href="#shop" class="btn-order-master inline-block w-auto px-10 py-4 rounded-full" data-ar="تسوقي الـ 39 عرضاً" data-en="Explore 39 Offers">Explore 39 Offers</a>
+                <p class="text-lg opacity-70 mb-10 leading-relaxed italic" data-ar="بإشراف د. ندى عويضة. نختار لكِ أفضل التركيبات الطبية لضمان نتائج حقيقية وآمنة." data-en="Under Dr. Nada's supervision, we provide clinical formulas for safe, real results.">Under Dr. Nada's supervision, we provide clinical formulas for safe, real results.</p>
+                <a href="#shop" class="btn-order-master inline-block w-auto px-10 py-4 rounded-full shadow-xl" data-ar="تسوقي العروض" data-en="Explore Offers">Explore Offers</a>
             </div>
         </div>
     </section>
 
     <!-- SHOP SECTION -->
-    <section id="shop" class="py-24 px-6 bg-white">
-        <div class="container mx-auto text-center">
-            <h2 id="section-title" class="text-3xl font-bold mb-16 uppercase tracking-widest" data-ar="أقوى العروض الحصرية" data-en="Exclusive Beauty Offers">Exclusive Beauty Offers</h2>
-            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-left"></div>
+    <section id="shop" class="py-24 px-6 border-t border-black/5 dark:border-white/5">
+        <div class="container mx-auto">
+            <h2 id="section-title" class="text-3xl font-bold mb-8 uppercase tracking-widest text-center" data-ar="أقوى العروض الحصرية" data-en="Exclusive Beauty Offers">Exclusive Beauty Offers</h2>
+            
+            <div class="flex flex-wrap justify-center gap-4 mb-12" id="filter-container">
+                <button onclick="filterProducts('all')" class="filter-btn active" data-ar="الكل" data-en="All">All</button>
+                <button onclick="filterProducts('hair')" class="filter-btn" data-ar="شعر" data-en="Hair">Hair</button>
+                <button onclick="filterProducts('skin')" class="filter-btn" data-ar="بشرة" data-en="Skin">Skin</button>
+                <button onclick="filterProducts('body')" class="filter-btn" data-ar="جسم" data-en="Body">Body</button>
+                <button onclick="filterProducts('offer')" class="filter-btn" data-ar="عروض" data-en="Offers">Offers</button>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
         </div>
     </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-white py-16 px-6">
+        <div class="container mx-auto grid md:grid-cols-3 gap-12 text-center md:text-left rtl:md:text-right">
+            <div>
+                <img class="logo-img h-12 mb-6 mx-auto md:mx-0 brightness-0 invert">
+                <p class="opacity-60 text-sm leading-relaxed" data-ar="نهتم بجمالكِ من خلال توفير أفضل المنتجات الطبية الأصلية والمجربة طبياً." data-en="We care for your beauty by providing the best original and clinically tested medical products.">We care for your beauty by providing the best original and clinically tested medical products.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6" data-ar="روابط سريعة" data-en="Quick Links">Quick Links</h4>
+                <ul class="space-y-4 opacity-60 text-sm">
+                    <li><a href="#home" data-ar="الرئيسية" data-en="Home">Home</a></li>
+                    <li><a href="#shop" data-ar="العروض" data-en="Offers">Offers</a></li>
+                    <li><a href="https://wa.me/201091560043" data-ar="تواصل معنا" data-en="Contact Us">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6" data-ar="تابعونا" data-en="Follow Us">Follow Us</h4>
+                <div class="flex justify-center md:justify-start gap-4">
+                    <a href="https://wa.me/201091560043" class="hover:text-emerald-500 transition"><i data-lucide="message-circle"></i></a>
+                    <a href="#" class="hover:text-emerald-500 transition"><i data-lucide="instagram"></i></a>
+                    <a href="#" class="hover:text-emerald-500 transition"><i data-lucide="facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10 mt-12 pt-8 text-center text-[10px] opacity-40 uppercase tracking-widest">
+            &copy; 2024 Dr. Care. All Rights Reserved.
+        </div>
+    </footer>
 
     <a href="https://wa.me/201091560043" target="_blank" class="float-whatsapp bg-[#25D366] text-white p-4 rounded-full shadow-2xl"><i data-lucide="message-circle"></i></a>
 
     <!-- CHECKOUT MODAL -->
     <div id="checkoutModal" class="fixed inset-0 bg-black/95 hidden z-[3000] flex items-center justify-center p-4 backdrop-blur-md">
-        <div class="bg-white p-10 rounded-[2.5rem] max-w-md w-full relative text-gray-900 text-right">
+        <div class="bg-white p-10 rounded-[2.5rem] max-w-md w-full relative text-gray-900 rtl:text-right">
             <button onclick="closeCheckout()" class="absolute top-6 right-6 text-gray-400"><i data-lucide="x"></i></button>
             <h3 class="text-2xl font-bold mb-6 underline decoration-gold" data-ar="بيانات الطلب" data-en="Order Details">Order Details</h3>
             <form id="orderForm" class="space-y-4">
-                <input type="text" id="custName" placeholder="Name" data-placeholder-ar="الاسم بالكامل" class="w-full border-b py-3 outline-none" required>
-                <input type="tel" id="custPhone" placeholder="WhatsApp" data-placeholder-ar="رقم الموبايل" class="w-full border-b py-3 outline-none" required>
-                <textarea id="custAddress" placeholder="Address" data-placeholder-ar="العنوان" class="w-full border-b py-3 h-20 outline-none resize-none" required></textarea>
-                <button type="submit" id="submitBtn" class="btn-order-master uppercase">Confirm Order</button>
+                <input type="text" id="custName" placeholder="Name" data-placeholder-ar="الاسم بالكامل" data-placeholder-en="Name" class="w-full border-b py-3 outline-none" required>
+                <input type="tel" id="custPhone" placeholder="WhatsApp" data-placeholder-ar="رقم الموبايل" data-placeholder-en="WhatsApp" class="w-full border-b py-3 outline-none" required>
+                <textarea id="custAddress" placeholder="Address" data-placeholder-ar="العنوان" data-placeholder-en="Address" class="w-full border-b py-3 h-20 outline-none resize-none" required></textarea>
+                <button type="submit" id="submitBtn" class="btn-order-master uppercase" data-ar="تأكيد الطلب" data-en="Confirm Order">Confirm Order</button>
             </form>
         </div>
     </div>
 
     <script>
         const products = [
-            { id: 1, nameAr: "اسكراب ايفا الاصلى", nameEn: "Eva Body Scrub", price: 150, tagAr: "تفتيح", tagEn: "BRIGHTEN", img: "WhatsApp Image 2026-07-19 at 12.37.03 AM" },
-            { id: 2, nameAr: "سيروم سكين سايد هيالورونيك", nameEn: "Skin Side Hyaluronic Serum", price: 280, tagAr: "ترطيب", tagEn: "HYDRATE", img: "WhatsApp Image 2026-07-19 at 12.34.41 AM" },
-            { id: 3, nameAr: "سيروم سكين سايد نياسيناميد", nameEn: "Skin Side Niacinamide", price: 280, tagAr: "حبوب", tagEn: "ACNE", img: "WhatsApp Image 2026-07-19 at 12.34.41 AM" },
-            { id: 4, nameAr: "عرض العيد: صابون وليفة", nameEn: "Moroccan Eid Offer", price: 185, tagAr: "عرض", tagEn: "EID", img: "WhatsApp Image 2026-07-08 at 1.57.07 AM" },
-            { id: 5, nameAr: "كريم كابكسي لترطيب الشعر", nameEn: "Capixy Hair Cream", price: 290, oldPrice: 320, tagAr: "ترطيب", tagEn: "HYDRATE", img: "WhatsApp Image 2026-07-08 at 12.13.53 AM" },
-            { id: 6, nameAr: "كابكسي حمام كريم للشعر", nameEn: "Capixy Hair Mask", price: 450, tagAr: "عناية", tagEn: "REPAIR", img: "WhatsApp Image 2026-07-08 at 12.12.01 AM" },
-            { id: 7, nameAr: "شفرة إنبويشن للحساسة", nameEn: "Intuition Razor", price: 650, tagAr: "عناية", tagEn: "SENSITIVE", img: "WhatsApp Image 2026-07-08 at 12.11.04 AM" },
-            { id: 8, nameAr: "كابكسي إنتنس إسبراي", nameEn: "Capixy Intense Spray", price: 750, tagAr: "انبات", tagEn: "GROWTH", img: "WhatsApp Image 2026-07-01 at 11.11.34 AM" },
-            { id: 9, nameAr: "أمبولات كابكسي المكثفة", nameEn: "Capixy Hair Ampoules", price: 950, tagAr: "علاج", tagEn: "INTENSIVE", img: "WhatsApp Image 2026-07-01 at 12.26.42 PM (1)" },
-            { id: 10, nameAr: "ليفيز كريم مرطب جيل", nameEn: "Leaves Hydrating Gel", price: 200, oldPrice: 220, tagAr: "ترطيب", tagEn: "GEL", img: "WhatsApp Image 2026-06-28 at 5.05.50 PM" },
-            { id: 11, nameAr: "كريم مويست وان باليوريا", nameEn: "Moist-1 Urea Cream", price: 150, tagAr: "جديد", tagEn: "UREA 10%", img: "WhatsApp Image 2026-06-28 at 4.49.12 PM" },
-            { id: 12, nameAr: "غسول فلوريش المطور", nameEn: "Florysh Cleanser", price: 300, tagAr: "طبي", tagEn: "WASH", img: "WhatsApp Image 2026-06-28 at 4.48.42 PM" },
-            { id: 13, nameAr: "عرض غسول ديرماكتيف", nameEn: "Dermactive Wash Duo", price: 220, oldPrice: 440, tagAr: "خصم 50%", tagEn: "50% OFF", img: "WhatsApp Image 2026-06-28 at 5.18.25 PM" },
-            { id: 14, nameAr: "عرض مرطب ديرماكتيف", nameEn: "Dermactive Cream Duo", price: 270, oldPrice: 350, tagAr: "توفير", tagEn: "OFFER", img: "WhatsApp Image 2026-06-28 at 5.16.37 PM" },
-            { id: 15, nameAr: "عرض إيفا الكبير (قطعتين)", nameEn: "Eva Big Duo Offer", price: 400, oldPrice: 450, tagAr: "توفير", tagEn: "SALE", img: "EVA BIG DUO OFFER 2PCS" },
-            { id: 16, nameAr: "بودي سبلاش إيفا (كبير)", nameEn: "Eva Big Body Splash", price: 200, oldPrice: 225, tagAr: "كبير", tagEn: "BIG", img: "EVA BIG BODY SPLASH" },
-            { id: 17, nameAr: "عرض شان فانيليا + ايفا كوزي", nameEn: "Shaan & Eva Offer", price: 400, oldPrice: 450, tagAr: "عرض", tagEn: "HOT", img: "SHAAN & EVA DUO OFFER" },
-            { id: 18, nameAr: "مرطب شفاه لانيج كوري", nameEn: "Laneige Korean Balm", price: 150, oldPrice: 200, tagAr: "كوري", tagEn: "K-BEAUTY", img: "lanige" },
-            { id: 19, nameAr: "عرض مزيل عرق ستارفيل 1+1", nameEn: "Starville Deodorant", price: 220, oldPrice: 250, tagAr: "عرض", tagEn: "OFFER", img: "STARVILLE DEODORANT 1+1" },
-            { id: 20, nameAr: "مرطب الشفاه شان بالم", nameEn: "SHAAN Lip Balm", price: 100, tagAr: "شفايف", tagEn: "LIPS", img: "SHAAN UP BALM" },
-            { id: 21, nameAr: "ايفا وردي ترافيل", nameEn: "Eva Pink Splash", price: 75, oldPrice: 100, tagAr: "TRAVEL", tagEn: "TRAVEL", img: "pink eva travel size" },
-            { id: 22, nameAr: "ايفا أزرق ترافيل", nameEn: "Eva Blue Splash", price: 75, oldPrice: 100, tagAr: "TRAVEL", tagEn: "TRAVEL", img: "blue eva travel size" },
-            { id: 23, nameAr: "ايفا أرجواني ترافيل", nameEn: "Eva Purple Splash", price: 75, oldPrice: 100, tagAr: "TRAVEL", tagEn: "TRAVEL", img: "purpel eva travel size" },
-            { id: 24, nameAr: "غسول ستارفيل الدهنية", nameEn: "Starville Oily Wash", price: 230, tagAr: "SALE", tagEn: "SALE", img: "STARVILLE OILY WASH" },
-            { id: 25, nameAr: "فازلين ليب ثيرابي", nameEn: "Vaseline Lip Therapy", price: 250, tagAr: "LIPS", tagEn: "LIPS", img: "VASELINE LIP THERAPY" },
-            { id: 26, nameAr: "مرطب مويست وان", nameEn: "Moist-1 Cream", price: 180, tagAr: "MEDICAL", tagEn: "MEDICAL", img: "MOIST-1 CREAM" },
-            { id: 27, nameAr: "غسول مويست وان جاف", nameEn: "Moist-1 Cleanser", price: 250, tagAr: "CREAMY", tagEn: "CREAMY", img: "MOIST-1 CLEANSER" },
-            { id: 28, nameAr: "هير ميست هير ديلي", nameEn: "Hair Daily Mist", price: 350, tagAr: "MIST", tagEn: "MIST", img: "HAIR DAILY MIST" },
-            { id: 29, nameAr: "تترا جلو تفتيح", nameEn: "Tetra Glow Bright", price: 350, tagAr: "GLOW", tagEn: "GLOW", img: "TETRA GLOW BRIGHTENING" },
-            { id: 30, nameAr: "سيروم فلوريش سالسيلك", nameEn: "Florysh Salicylic", price: 350, tagAr: "ACNE", tagEn: "ACNE", img: "FLORYSH SALICYUC" },
-            { id: 31, nameAr: "زيت كابكسي إليكسير", nameEn: "Capixy Oil", price: 650, tagAr: "HAIR", tagEn: "HAIR", img: "capixy hair oil elixir" },
-            { id: 32, nameAr: "غسول ديرماكتيف فوم", nameEn: "Dermactive Foam", price: 220, tagAr: "MED", tagEn: "MED", img: "dermaactive foam" },
-            { id: 33, nameAr: "ديرماكتيف فلويد 1+1", nameEn: "Dermactive 1+1 Offer", price: 300, tagAr: "1+1", tagEn: "1+1", img: "DERMACTIVE 1+1 OFFER" },
-            { id: 34, nameAr: "مرطب كيارا جيل", nameEn: "Kiara Gel", price: 250, tagAr: "GEL", tagEn: "GEL", img: "kira gel" },
-            { id: 35, nameAr: "لوريال برودجي صبغة", nameEn: "L'Oreal Prodigy", price: 450, tagAr: "PRO", tagEn: "PRO", img: "L'OREAL PRODIGY" },
-            { id: 36, nameAr: "شان فانيليا بادي ميلك", nameEn: "Shaan Vanilla Milk", price: 220, tagAr: "BODY", tagEn: "BODY", img: "shaan body milk vanila coconut" },
-            { id: 37, nameAr: "شان ورد بادي ميلك", nameEn: "Shaan Rose Milk", price: 220, tagAr: "BODY", tagEn: "BODY", img: "shaan body milk" },
-            { id: 38, nameAr: "ميلاتايم جل إسباني", nameEn: "Melatime Gel", price: 350, tagAr: "SPF", tagEn: "SPF", img: "melatime gel" },
-            { id: 39, nameAr: "مجموعة ڤيرا للشعر", nameEn: "Vera Set", price: 450, tagAr: "SET", tagEn: "SET", img: "vera set" }
+            { id: 53, cat: 'body', nameAr: "شفرات دوركو إيف 6 الأصلي", nameEn: "Dorco Eve 6 Razors", price: 200, tagAr: "وصل حديثاً", tagEn: "NEW ARRIVAL", img: "dorco eve 6" },
+            { id: 52, cat: 'offer', nameAr: "عرض تويست أند جو (إطالة + تساقط + فراغات)", nameEn: "Twist & Go Trio Offer (Growth+Loss+Gaps)", price: 800, tagAr: "عرض الـ 3 قطع", tagEn: "3-IN-1 OFFER", img: "hi am 3mk" },
+            { id: 1, cat: 'hair', nameAr: "تويست أند جو سبراي للتساقط", nameEn: "Twist & Go Anti-Falling", price: 300, tagAr: "علاج مكثف", tagEn: "INTENSIVE", img: "twist and go for falling" },
+            { id: 2, cat: 'hair', nameAr: "زيت تويست أند جو أورجانيك", nameEn: "Twist & Go Organic Oil", price: 260, oldPrice: 300, tagAr: "طبيعي", tagEn: "ORGANIC", img: "twist and go organic" },
+            { id: 3, cat: 'hair', nameAr: "حمام كريم تويست أند جو", nameEn: "Twist & Go Hair Mask", price: 180, oldPrice: 220, tagAr: "ترطيب", tagEn: "REPAIR", img: "twist and go hair mask" },
+            { id: 4, cat: 'hair', nameAr: "شامبو تويست أند جو", nameEn: "Twist & Go Shampoo", price: 160, tagAr: "طبي", tagEn: "CLEANSE", img: "twistgo" },
+            { id: 5, cat: 'hair', nameAr: "تويست أند جو إسبراي لوشن", nameEn: "Twist & Go Spray Lotion", price: 260, oldPrice: 320, tagAr: "تتقيل", tagEn: "DENSITY", img: "twist and go spray" },
+            { id: 6, cat: 'hair', nameAr: "سيروم تويست أند جو للشعر", nameEn: "Twist & Go Hair Serum", price: 180, oldPrice: 220, tagAr: "شعر", tagEn: "SERUM", img: "WhatsApp Image 2026-07-31 at 2.37.46 AM" },
+            { id: 7, cat: 'body', nameAr: "حليب الجسم سكين سايد", nameEn: "Skinside Body Milk", price: 200, oldPrice: 220, tagAr: "ترطيب", tagEn: "MILK", img: "WhatsApp Image 2026-07-31 at 2.37.26 AM" },
+            { id: 8, cat: 'body', nameAr: "اسكراب ايفا الاصلى", nameEn: "Eva Body Scrub", price: 150, tagAr: "تفتيح", tagEn: "GLOW", img: "WhatsApp Image 2026-07-19 at 12.37.03 AM" },
+            { id: 9, cat: 'skin', nameAr: "سيروم سكين سايد هيالورونيك", nameEn: "Skin Side Hyaluronic", price: 280, tagAr: "ترطيب", tagEn: "HYDRATE", img: "WhatsApp Image 2026-07-19 at 12.34.41 AM" },
+            { id: 10, cat: 'skin', nameAr: "سيروم سكين سايد نياسيناميد", nameEn: "Skin Side Niacinamide", price: 280, tagAr: "حبوب", tagEn: "ACNE", img: "WhatsApp Image 2026-07-19 at 12.34.41 AM" },
+            { id: 11, cat: 'body', nameAr: "عرض العيد: صابون وليفة", nameEn: "Moroccan Eid Offer", price: 185, tagAr: "عرض", tagEn: "EID", img: "WhatsApp Image 2026-07-08 at 1.57.07 AM" },
+            { id: 12, cat: 'hair', nameAr: "كريم كابكسي لترطيب الشعر", nameEn: "Capixy Hair Cream", price: 290, oldPrice: 320, tagAr: "ترطيب", tagEn: "HYDRATE", img: "WhatsApp Image 2026-07-08 at 12.13.53 AM" },
+            { id: 13, cat: 'hair', nameAr: "كابكسي حمام كريم للشعر", nameEn: "Capixy Hair Mask", price: 450, tagAr: "عناية", tagEn: "REPAIR", img: "WhatsApp Image 2026-07-08 at 12.12.01 AM" },
+            { id: 14, cat: 'body', nameAr: "شفرة إنبويشن للحساسة", nameEn: "Intuition Razor", price: 650, tagAr: "عناية", tagEn: "SENSITIVE", img: "WhatsApp Image 2026-07-08 at 12.11.04 AM" },
+            { id: 15, cat: 'hair', nameAr: "كابكسي إنتنس إسبراي انبات", nameEn: "Capixy Intense Spray", price: 750, tagAr: "انبات", tagEn: "GROWTH", img: "WhatsApp Image 2026-07-01 at 11.11.34 AM" },
+            { id: 16, cat: 'hair', nameAr: "أمبولات كابكسي المكثفة", nameEn: "Capixy Hair Ampoules", price: 950, tagAr: "علاج", tagEn: "INTENSIVE", img: "WhatsApp Image 2026-07-01 at 12.26.42 PM (1)" },
+            { id: 17, cat: 'skin', nameAr: "ليفيز كريم مرطب جيل", nameEn: "Leaves Hydrating Gel", price: 200, oldPrice: 220, tagAr: "ترطيب", tagEn: "GEL", img: "WhatsApp Image 2026-06-28 at 5.05.50 PM" },
+            { id: 18, cat: 'body', nameAr: "كريم مويست وان باليوريا", nameEn: "Moist-1 Urea Cream", price: 150, tagAr: "جديد", tagEn: "UREA 10%", img: "WhatsApp Image 2026-06-28 at 4.49.12 PM" },
+            { id: 19, cat: 'skin', nameAr: "غسول فلوريش المطور", nameEn: "Florysh Cleanser", price: 300, tagAr: "طبي", tagEn: "WASH", img: "WhatsApp Image 2026-06-28 at 4.48.42 PM" },
+            { id: 20, cat: 'offer', nameAr: "عرض غسول ديرماكتيف قطعتين", nameEn: "Dermactive Cleanser 1+1", price: 220, oldPrice: 440, tagAr: "خصم 50%", tagEn: "50% OFF", img: "WhatsApp Image 2026-06-28 at 5.18.25 PM" },
+            { id: 21, cat: 'offer', nameAr: "عرض مرطب ديرماكتيف قطعتين", nameEn: "Dermactive Moisturizer 1+1", price: 270, oldPrice: 350, tagAr: "توفير", tagEn: "OFFER", img: "WhatsApp Image 2026-06-28 at 5.16.37 PM" },
+            { id: 22, cat: 'offer', nameAr: "عرض إيفا الكبير (قطعتين)", nameEn: "Eva Big Duo Offer", price: 400, tagAr: "توفير", tagEn: "SALE", img: "EVA BIG DUO OFFER 2PCS" },
+            { id: 23, cat: 'body', nameAr: "بودي سبلاش إيفا (كبير)", nameEn: "Eva Big Body Splash", price: 200, tagAr: "كبير", tagEn: "BIG", img: "EVA BIG BODY SPLASH" },
+            { id: 24, cat: 'offer', nameAr: "عرض شان فانيليا + ايفا كوزي", nameEn: "Shaan & Eva Offer", price: 400, tagAr: "عرض", tagEn: "HOT", img: "SHAAN & EVA DUO OFFER" },
+            { id: 25, cat: 'body', nameAr: "مرطب شفاه لانيج كوري", nameEn: "Laneige Korean Balm", price: 150, tagAr: "كوري", tagEn: "K-BEAUTY", img: "lanige" },
+            { id: 26, cat: 'offer', nameAr: "عرض مزيل عرق ستارفيل 1+1", nameEn: "Starville 1+1 Offer", price: 220, tagAr: "عرض", tagEn: "OFFER", img: "STARVILLE DEODORANT 1+1" },
+            { id: 27, cat: 'body', nameAr: "مرطب الشفاه شان بالم", nameEn: "SHAAN Lip Balm", price: 100, tagAr: "شفايف", tagEn: "LIPS", img: "SHAAN UP BALM" },
+            { id: 31, cat: 'skin', nameAr: "غسول ستارفيل الدهنية", nameEn: "Starville Oily Wash", price: 230, tagAr: "SALE", tagEn: "SALE", img: "STARVILLE OILY WASH" },
+            { id: 32, cat: 'body', nameAr: "فازلين ليب ثيرابي صفيح", nameEn: "Vaseline Lip Therapy", price: 250, tagAr: "LIPS", tagEn: "LIPS", img: "VASELINE LIP THERAPY" },
+            { id: 33, cat: 'skin', nameAr: "مرطب مويست وان", nameEn: "Moist-1 Cream", price: 180, tagAr: "MEDICAL", tagEn: "MEDICAL", img: "MOIST-1 CREAM" },
+            { id: 34, cat: 'skin', nameAr: "غسول مويست وان جاف", nameEn: "Moist-1 Cleanser", price: 250, tagAr: "CREAMY", tagEn: "CREAMY", img: "MOIST-1 CLEANSER" },
+            { id: 35, cat: 'hair', nameAr: "هير ميست هير ديلي", nameEn: "Hair Daily Mist", price: 350, tagAr: "MIST", tagEn: "MIST", img: "HAIR DAILY MIST" },
+            { id: 36, cat: 'skin', nameAr: "تترا جلو تفتيح", nameEn: "Tetra Glow Bright", price: 350, tagAr: "GLOW", tagEn: "GLOW", img: "TETRA GLOW BRIGHTENING" },
+            { id: 37, cat: 'skin', nameAr: "سيروم فلوريش سالسيلك", nameEn: "Florysh Salicylic", price: 350, tagAr: "ACNE", tagEn: "ACNE", img: "FLORYSH SALICYUC" },
+            { id: 38, cat: 'hair', nameAr: "زيت كابكسي إليكسير", nameEn: "Capixy Oil", price: 650, tagAr: "HAIR", tagEn: "HAIR", img: "capixy hair oil elixir" },
+            { id: 39, cat: 'skin', nameAr: "غسول ديرماكتيف فوم", nameEn: "Dermactive Foam", price: 220, tagAr: "MED", tagEn: "MED", img: "dermaactive foam" },
+            { id: 40, cat: 'offer', nameAr: "ديرماكتيف فلويد 1+1", nameEn: "Dermactive 1+1 Offer", price: 300, tagAr: "1+1", tagEn: "1+1", img: "DERMACTIVE 1+1 OFFER" },
+            { id: 41, cat: 'skin', nameAr: "مرطب كيارا جيل", nameEn: "Kiara Gel", price: 250, tagAr: "GEL", tagEn: "GEL", img: "kira gel" },
+            { id: 43, cat: 'body', nameAr: "شان فانيليا بادي ميلك", nameEn: "Shaan Vanilla Milk", price: 220, tagAr: "BODY", tagEn: "MILK", img: "shaan body milk vanila coconut" },
+            { id: 44, cat: 'body', nameAr: "شان ورد بادي ميلك", nameEn: "Shaan Rose Milk", price: 220, tagAr: "BODY", tagEn: "MILK", img: "shaan body milk" },
+            { id: 45, cat: 'skin', nameAr: "ميلاتايم جل إسباني", nameEn: "Melatime Gel", price: 350, tagAr: "SPF", tagEn: "SPF", img: "melatime gel" },
+            { id: 46, cat: 'hair', nameAr: "مجموعة ڤيرا للشعر", nameEn: "Vera Set", price: 450, tagAr: "SET", tagEn: "SET", img: "vera set" },
+            { id: 47, cat: 'offer', nameAr: "دراكون جيل 1+1", nameEn: "Drakon Gel 1+1", price: 250, tagAr: "1+1", tagEn: "1+1", img: "drakon sunscreen gel" },
+            { id: 48, cat: 'offer', nameAr: "دراكون كريم 1+1", nameEn: "Drakon Cream 1+1", price: 300, tagAr: "1+1", tagEn: "1+1", img: "drakon sun screen" },
+            { id: 49, cat: 'skin', nameAr: "كليرسال pH", nameEn: "Clearsal pH Wash", price: 200, tagAr: "MED", tagEn: "MED", img: "CLEARSAL PH" },
+            { id: 50, cat: 'skin', nameAr: "سيروم ديرما تن", nameEn: "Derma Ten", price: 220, tagAr: "ACNE", tagEn: "ACNE", img: "seroum dermaten" },
+            { id: 51, cat: 'hair', nameAr: "اسبراي تويست اند جو لوشن لعلاج تساقط الشعر", nameEn: "Twist & Go Hair Loss Treatment Lotion Spray", price: 300, tagAr: "تساقط الشعر", tagEn: "falling hair", img: "twist and go lotion for falling" }
         ];
 
-        let lang = 'en'; let cart = []; let isDark = false;
+        let lang = 'en'; let cart = []; let isDark = false; let currentFilter = 'all';
 
         function tryImage(imgElement, baseName) {
             const exts = ['.png', '.jpg', '.jpeg', '.JPG', '.PNG']; let index = 0;
             imgElement.onerror = function() {
                 if (index < exts.length) { this.src = baseName + exts[index]; index++; }
-                else { this.src = 'https://via.placeholder.com/400x500?text=No+Image'; this.onerror = null; }
+                else { this.src = 'https://via.placeholder.com/400x500?text=Product'; this.onerror = null; }
             };
             imgElement.src = baseName + exts[0];
         }
 
+        function filterProducts(category) {
+            currentFilter = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(category)) btn.classList.add('active');
+            });
+            renderProducts();
+        }
+
         function renderProducts() {
             const grid = document.getElementById('product-grid'); grid.innerHTML = '';
-            products.forEach(p => {
+            const filtered = currentFilter === 'all' ? products : products.filter(p => p.cat === currentFilter || (Array.isArray(p.cat) && p.cat.includes(currentFilter)));
+            
+            filtered.forEach(p => {
                 const label = lang === 'ar' ? 'أضف للحقيبة' : 'Add to Bag';
                 const card = document.createElement('div');
                 card.className = "product-card p-5 relative text-center";
-                card.innerHTML = `<div class="category-badge">${lang === 'ar' ? p.tagAr : p.tagEn}</div><div class="img-container mb-4"><img class="prod-img"></div><h3 class="text-[12px] font-bold h-10 mb-2 uppercase tracking-tight font-bold">${lang === 'ar' ? p.nameAr : p.nameEn}</h3><div class="flex flex-col justify-center mb-4"><span class="text-lg font-bold text-emerald-600">${p.price} EGP</span>${p.oldPrice ? `<span class="text-[10px] text-gray-300 line-through font-bold">${p.oldPrice} EGP</span>` : ''}</div><button onclick="addToCart(${p.id})" class="btn-order-master uppercase">${label}</button>`;
+                card.innerHTML = `
+                    <div class="category-badge">${lang === 'ar' ? p.tagAr : p.tagEn}</div>
+                    <div class="img-container mb-4"><img class="prod-img"></div>
+                    <h3 class="text-[12px] font-bold h-10 mb-2 uppercase tracking-tight">${lang === 'ar' ? p.nameAr : p.nameEn}</h3>
+                    <div class="flex flex-col justify-center mb-4">
+                        <span class="text-lg font-bold text-emerald-600">${p.price} EGP</span>
+                        ${p.oldPrice ? `<span class="text-[10px] text-gray-300 line-through font-bold">${p.oldPrice} EGP</span>` : ''}
+                    </div>
+                    <button onclick="addToCart(${p.id})" class="btn-order-master uppercase">${label}</button>`;
                 grid.appendChild(card);
                 tryImage(card.querySelector('.prod-img'), p.img);
             });
         }
 
-        tryImage(document.querySelector('.logo-img'), 'logo');
-        tryImage(document.querySelector('.hero-img'), 'vera set');
-
-        function toggleTheme() { isDark = !isDark; document.body.classList.toggle('dark-mode'); document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon'); lucide.createIcons(); }
-        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('open'); }
-        function addToCart(id) { const p = products.find(it => it.id === id); cart.push(p); updateCartUI(); if(!document.body.querySelector('.cart-sidebar').classList.contains('open')) toggleCart(); }
-        function removeFromCart(idx) { cart.splice(idx, 1); updateCartUI(); }
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const t = document.getElementById('cart-items'); t.innerHTML = ''; let ttl = 0;
-            cart.forEach((it, idx) => { ttl += it.price; t.innerHTML += `<div class="flex items-center gap-4 bg-gray-50 dark:bg-black/20 p-4 rounded-2xl text-right font-bold text-[10px]"><div class="flex-1"><h4>${lang === 'ar' ? it.nameAr : it.nameEn}</h4><p>${it.price} EGP</p></div><button onclick="removeFromCart(${idx})"><i data-lucide="trash-2"></i></button></div>`; });
-            document.getElementById('cart-total').innerText = ttl + " EGP"; lucide.createIcons();
+            cart.forEach((it, idx) => { 
+                ttl += it.price; 
+                t.innerHTML += `
+                <div class="flex items-center gap-4 bg-gray-50 dark:bg-black/20 p-4 rounded-2xl ${lang === 'ar' ? 'text-right' : 'text-left'}">
+                    <div class="flex-1">
+                        <h4 class="text-[11px]">${lang === 'ar' ? it.nameAr : it.nameEn}</h4>
+                        <p class="text-emerald-600">${it.price} EGP</p>
+                    </div>
+                    <button onclick="removeFromCart(${idx})" class="text-red-500"><i data-lucide="trash-2"></i></button>
+                </div>`; 
+            });
+            document.getElementById('cart-total').innerText = ttl + " EGP"; 
+            lucide.createIcons();
         }
+
+        function toggleTheme() { 
+            isDark = !isDark; 
+            if (isDark) document.body.classList.add('dark');
+            else document.body.classList.remove('dark');
+            document.getElementById('theme-icon').setAttribute('data-lucide', isDark ? 'sun' : 'moon'); 
+            lucide.createIcons(); 
+        }
+
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('open'); }
+        function addToCart(id) { const p = products.find(it => it.id === id); cart.push(p); updateCartUI(); if(!document.getElementById('cart-sidebar').classList.contains('open')) toggleCart(); }
+        function removeFromCart(idx) { cart.splice(idx, 1); updateCartUI(); }
+
         function toggleLang() {
             lang = lang === 'en' ? 'ar' : 'en';
             const h = document.getElementById('main-html'); h.dir = lang === 'ar' ? 'rtl' : 'ltr'; h.lang = lang;
-            document.body.className = lang === 'ar' ? 'lang-ar text-right' : 'lang-en text-left';
-            if (isDark) document.body.classList.add('dark-mode');
-            document.getElementById('lang-btn').innerText = lang === 'ar' ? 'EN' : 'AR';
-            document.getElementById('section-title').innerText = lang === 'ar' ? 'أقوى العروض الحصرية' : 'Exclusive Beauty Offers';
+            document.body.className = lang === 'ar' ? 'lang-ar' : 'lang-en';
+            if (isDark) document.body.classList.add('dark');
+            document.getElementById('lang-btn').innerText = lang === 'en' ? 'AR' : 'EN';
             document.querySelectorAll('[data-ar]').forEach(el => el.innerText = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en'));
+            document.querySelectorAll('[data-placeholder-ar]').forEach(el => el.placeholder = lang === 'ar' ? el.getAttribute('data-placeholder-ar') : el.getAttribute('data-placeholder-en'));
             renderProducts(); updateCartUI(); lucide.createIcons();
         }
-        function openCheckout() { if(cart.length === 0) return alert("Empty!"); document.getElementById('checkoutModal').classList.remove('hidden'); }
+
+        function openCheckout() { if(cart.length === 0) return alert(lang === 'ar' ? "الحقيبة فارغة!" : "Bag is empty!"); document.getElementById('checkoutModal').classList.remove('hidden'); }
         function closeCheckout() { document.getElementById('checkoutModal').classList.add('hidden'); }
 
         document.getElementById('orderForm').addEventListener('submit', function(e) {
@@ -229,13 +333,15 @@
             const nm = document.getElementById('custName').value, ph = document.getElementById('custPhone').value, ad = document.getElementById('custAddress').value;
             const its = cart.map(i => lang === 'ar' ? i.nameAr : i.nameEn).join(', ');
             const total = document.getElementById('cart-total').innerText;
-            const msg = lang === 'ar' ? `*طلب جديد دكتور كير*%0A*المنتجات:* ${its}%0A*الإجمالي:* ${total}%0A---%0A*الاسم:* ${nm}%0A*الموبايل:* ${ph}%0A*العنوان:* ${ad}` : `*DR CARE ORDER*%0A*Items:* ${its}%0A*Total:* ${total}%0A---%0A*Name:* ${nm}%0A*Phone:* ${ph}%0A*Address:* ${ad}`;
+            const msg = `*DR CARE ORDER*%0A*Items:* ${its}%0A*Total:* ${total}%0A---%0A*Name:* ${nm}%0A*Phone:* ${ph}%0A*Address:* ${ad}`;
             window.open(`https://wa.me/201091560043?text=${msg}`, '_blank');
-            fetch('https://formspree.io/f/xvzjpvpw', { method: 'POST', body: JSON.stringify({nm, ph, ad, its, total}), headers: {'Content-Type': 'application/json'} });
             cart = []; updateCartUI(); closeCheckout();
         });
 
-        lucide.createIcons(); renderProducts();
+        tryImage(document.querySelector('.logo-img'), 'logo');
+        tryImage(document.querySelector('.hero-img'), 'vera set');
+        lucide.createIcons(); 
+        renderProducts();
     </script>
 </body>
 </html>
