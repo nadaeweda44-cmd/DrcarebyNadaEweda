@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dr. Care | Dr. Nada Eweda</title>
     
+    <!-- أيقونة الموقع بجانب العنوان -->
+    <link rel="icon" type="image/jpeg" href="logo.jpeg">
+    <link rel="shortcut icon" href="logo.jpeg" type="image/x-icon">
+    <link rel="apple-touch-icon" href="logo.jpeg">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -191,6 +196,18 @@
 
     <script>
         const products = [
+            { id: 66, cat: 'skin', nameAr: "ديرما إيل هيالو بالانس هيدرا جيل (مرطب)", nameEn: "Dermaelle Hyalubalance Oil Free Hydra Gel", price: 200, tagAr: "خالي من الزيوت", tagEn: "OIL FREE", img: "WhatsApp Image 2026-08-16 at 9.16.33 oilfreee" },
+            { id: 65, cat: 'body', nameAr: "ديرما ايل ديودرنت للتفتيح والحماية", nameEn: "Dermaelle Whitening Deodorant", price: 150, tagAr: "تفتيح وحماية", tagEn: "WHITENING", img: "WhatsApp Image 2026-08-16 at 9.16.33 PMlane" },
+            { id: 64, cat: 'skin', nameAr: "ديرما إيل هيالو سولير واقي شمس للبقع", nameEn: "Dermaelle Hyalu Solaire SPF 50+", price: 230, oldPrice: 250, tagAr: "حماية وتفتيح", tagEn: "SUNSCREEN", img: "WhatsApp Image 2026-08-16 at 9.16.33 PMhsyuluehit" },
+            { id: 62, cat: 'skin', nameAr: "سيروم ديرما إيل المتطور بالريتينول والببتيدات", nameEn: "Dermaelle Advanced Retinol & Peptides Serum", price: 350, tagAr: "تجديد وشباب", tagEn: "RENEWAL", img: "WhatsApp Image 2026-08-16 at 9.16.32 PMdermaelleretinol" },
+            { id: 61, cat: 'skin', nameAr: "كريم ديرما إيل للبشرة المعرضة للحبوب", nameEn: "Dermaelle Acne Prone Cream", price: 320, oldPrice: 350, tagAr: "علاج الحبوب", tagEn: "ACNE CARE", img: "WhatsApp Image 2026-08-16 at 9.16.32 PMdermaelle" },
+            { id: 60, cat: 'skin', nameAr: "غسول ديرما إيل بالهيالورونيك (لطيف)", nameEn: "Dermaelle Hyaluronic Cleansing Gel", price: 180, oldPrice: 220, tagAr: "ترطيب ونظافة", tagEn: "HYDRATING", img: "WhatsApp Image 2026-08-16 at 9.16.32 PMderma" },
+            { id: 58, cat: 'skin', nameAr: "سيروم ديرما ايل فيتامين سي (تفتيح ونضارة)", nameEn: "Derma Ale Vitamin C Serum", price: 420, oldPrice: 450, tagAr: "تفتيح البقع", tagEn: "BRIGHTENING", img: "seroumdermaile" },
+            { id: 57, cat: 'skin', nameAr: "سيروم نياسيناميد المطور من ديرما إيل (10%)", nameEn: "Dermaelle Advanced Niacinamide Serum (10%)", price: 370, tagAr: "تصغير مسام", tagEn: "ADVANCED 10%", img: "WhatsApp Image 2026-08-16 at 9.16.32 PM" },
+            { id: 59, cat: 'skin', nameAr: "سيروم نياسيناميد من ديرما إيل (الأساسي)", nameEn: "Dermaelle Niacinamide Serum (Essential)", price: 270, tagAr: "تنظيم دهون", tagEn: "ESSENTIAL", img: "datmeaelle Advanced nicinamide serum" },
+            { id: 56, cat: 'skin', nameAr: "ديرما ايل نياسيناميد غسول جيل", nameEn: "Derma Ale Niacinamide Cleansing Gel", price: 170, oldPrice: 200, tagAr: "تنظيف وتنظيم", tagEn: "CLEANSE & CONTROL", img: "WhatsApp Image 2026-08-16 at 9.16.31 PM" },
+            { id: 55, cat: 'skin', nameAr: "ديرما إيل سيكا كريم (بديل لاروش)", nameEn: "Derma Ale Cica Cream (LRP Alternative)", price: 270, oldPrice: 300, tagAr: "ترميم وإصلاح", tagEn: "REPAIR & SOOTHE", img: "WhatsApp Image 2026-08-16 at 9.16.29 PM" },
+            { id: 54, cat: 'skin', nameAr: "ديرما إيل لوشن للبشرة الجافة والحساسة", nameEn: "Derma Ale Repairing Lotion", price: 320, oldPrice: 350, tagAr: "ترطيب وإصلاح", tagEn: "REPAIR & HYDRATE", img: "WhatsApp Image 2026-08-16 at 9.16.28 PM" },
             { id: 53, cat: 'body', nameAr: "شفرات دوركو إيف 6 الأصلي", nameEn: "Dorco Eve 6 Razors", price: 200, tagAr: "وصل حديثاً", tagEn: "NEW ARRIVAL", img: "dorco eve 6" },
             { id: 52, cat: 'offer', nameAr: "عرض تويست أند جو (إطالة + تساقط + فراغات)", nameEn: "Twist & Go Trio Offer (Growth+Loss+Gaps)", price: 800, tagAr: "عرض الـ 3 قطع", tagEn: "3-IN-1 OFFER", img: "hi am 3mk" },
             { id: 1, cat: 'hair', nameAr: "تويست أند جو سبراي للتساقط", nameEn: "Twist & Go Anti-Falling", price: 300, tagAr: "علاج مكثف", tagEn: "INTENSIVE", img: "twist and go for falling" },
@@ -228,7 +245,7 @@
             { id: 36, cat: 'skin', nameAr: "تترا جلو تفتيح", nameEn: "Tetra Glow Bright", price: 350, tagAr: "GLOW", tagEn: "GLOW", img: "TETRA GLOW BRIGHTENING" },
             { id: 37, cat: 'skin', nameAr: "سيروم فلوريش سالسيلك", nameEn: "Florysh Salicylic", price: 350, tagAr: "ACNE", tagEn: "ACNE", img: "FLORYSH SALICYUC" },
             { id: 38, cat: 'hair', nameAr: "زيت كابكسي إليكسير", nameEn: "Capixy Oil", price: 650, tagAr: "HAIR", tagEn: "HAIR", img: "capixy hair oil elixir" },
-            { id: 39, cat: 'skin', nameAr: "غسول ديرماكتيف فوم", nameEn: "Dermactive Foam", price: 220, tagAr: "MED", tagEn: "MED", img: "dermaactive foam" },
+            { id: 39, cat: 'skin', nameAr: "غسول dيرماكتيف فوم", nameEn: "Dermactive Foam", price: 220, tagAr: "MED", tagEn: "MED", img: "dermaactive foam" },
             { id: 40, cat: 'offer', nameAr: "ديرماكتيف فلويد 1+1", nameEn: "Dermactive 1+1 Offer", price: 300, tagAr: "1+1", tagEn: "1+1", img: "DERMACTIVE 1+1 OFFER" },
             { id: 41, cat: 'skin', nameAr: "مرطب كيارا جيل", nameEn: "Kiara Gel", price: 250, tagAr: "GEL", tagEn: "GEL", img: "kira gel" },
             { id: 43, cat: 'body', nameAr: "شان فانيليا بادي ميلك", nameEn: "Shaan Vanilla Milk", price: 220, tagAr: "BODY", tagEn: "MILK", img: "shaan body milk vanila coconut" },
@@ -245,7 +262,7 @@
         let lang = 'en'; let cart = []; let isDark = false; let currentFilter = 'all';
 
         function tryImage(imgElement, baseName) {
-            const exts = ['.png', '.jpg', '.jpeg', '.JPG', '.PNG']; let index = 0;
+            const exts = ['.png', '.jpg', '.jpeg', '.JPG', '.PNG', '.jpeg']; let index = 0;
             imgElement.onerror = function() {
                 if (index < exts.length) { this.src = baseName + exts[index]; index++; }
                 else { this.src = 'https://via.placeholder.com/400x500?text=Product'; this.onerror = null; }
@@ -336,7 +353,6 @@
             
             const rawMsg = `*DR CARE ORDER*\n*Items:*\n - ${its}\n*Total:* ${total}\n---\n*Name:* ${nm}\n*Phone:* ${ph}\n*Address:* ${ad}`;
             
-            // Fixed line: using encodeURIComponent to prevent "&" from cutting off the text
             window.open(`https://wa.me/201091560043?text=${encodeURIComponent(rawMsg)}`, '_blank');
             
             cart = []; updateCartUI(); closeCheckout();
